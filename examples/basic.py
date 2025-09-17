@@ -1,6 +1,6 @@
 import asyncio
-from geminilayers import Serial, Parallel
-from geminilayers import Echo, Reverse, Text, ReplaceText, Judge, AudioGenerator
+from gemini.layers import Serial, Parallel
+from gemini.layers import Echo, Reverse, Text, ReplaceText, Judge
 
 
 async def main():
@@ -20,16 +20,11 @@ async def main():
          ReplaceText("World", "Planet"),
    ]).run(serial_branch)
 
-   # Generate audio from the text from the previous branch.
-   audio_branch = AudioGenerator(
-         model="gemini-2.5-pro",
-   ).run(parallel_branch)
-
    # Layers can be called one by one.
    judge_branch = Judge(
          model="gemini-2.5-pro",
          instructions="Judge whether the audio contains 'Universe'. If it does, keep it; otherwise, discard it.",
-   ).run(audio_branch)
+   ).run(parallel_branch)
    async for content in judge_branch:
      print(content)
 

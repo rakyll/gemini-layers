@@ -1,5 +1,5 @@
-geminilayers.egg-info
-geminilayers/__pycache__
+gemini_layers.egg-info
+gemini_layers/__pycache__
 *.pyc
 .DS_Store
 .vscode
