@@ -6,11 +6,23 @@ from typing import List
 from ._iter import copy_iter
 from asyncio import Queue
 from google.genai import types
+from enum import Enum
+
 
 Content = types.Content
 
 
+class Status(Enum):
+    """
+    Represents the different possible statuses of a task or process.
+    """
+    RUNNING = "running"
+    COMPLETED = "completed"
+    FAILED = "failed"
+
+
 class Output():
+  _status: Status = Status.RUNNING
   _queue: Queue
   _tasks: List[asyncio.Task]
   _refs: int
@@ -20,7 +32,7 @@ class Output():
     self._tasks = []
     self._refs = refs
 
-  def status(self):
+  def status(self) -> Status:
     # TODO: Implement status reporting.
     pass
 

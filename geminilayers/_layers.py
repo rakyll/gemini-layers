@@ -5,6 +5,7 @@ import asyncio
 from typing import AsyncIterator, List
 from abc import ABC, abstractmethod
 from google.genai import types
+from pprint import pprint
 
 
 class Echo(Layer):
@@ -84,3 +85,30 @@ class ReplaceText(Layer):
     task = asyncio.create_task(_replace())
     output._tasks.append(task)
     return output
+
+
+class Judge(Layer):
+  """A branch that judges the content results."""
+  def __init__(self, model: str, instructions: str):
+    self._model = model
+    self._system_instructions = instructions
+
+  def run(
+      self,
+      iter: AsyncIterator[types.Content] = None,
+  ) -> Output:
+    if iter is None:
+      raise ValueError("Judge branch requires an input iterator.")
+
+    output = Output()
+    async def _judge():
+      async for content in iter:
+       # TODO: Implement actual judge.
+        await output._put_content(content)
+      output.done()
+
+    task = asyncio.create_task(_judge())
+    output._tasks.append(task)
+    return output
+
+AudioGenerator = Judge
