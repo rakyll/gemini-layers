@@ -22,6 +22,7 @@ class Status(Enum):
 
 
 class Output():
+  # TODO: Turn Output into an abstract class.
   _status: Status = Status.RUNNING
   _queue: Queue
   _tasks: List[asyncio.Task]
